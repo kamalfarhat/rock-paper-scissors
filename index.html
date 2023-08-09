@@ -1,1 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissor</title>
+    
+</head>
+<body>
+    <script>
+        function getComputerChoice() {
+            return availableChoices[Math.floor(Math.random()*availableChoices.length)]
 
+        }
+
+        function getPlayerChoice(i) {
+            let choice = prompt('Welcome to game ' + i + '\nPlease enter your choice:')
+            return choice
+
+            }
+
+        function playRound(computer, player) {
+            let decision = ''
+            computer = getStringTitleCase(computer)
+            player = getStringTitleCase(player)
+            if(computer == 'Rock') {
+                if(player == 'Rock') {
+                    decision = 'Draw! you both chose ' + computer
+                } else if(player == 'Paper') {
+                    decision = 'You Win! ' + player + ' beats ' + computer
+                } else {
+                    decision = 'You Lose! ' + computer + ' beats ' + player
+                }
+            } else if(computer == 'Paper') {
+                if(player == 'Rock') {
+                    decision = 'You Lose! ' + computer + ' beats ' + player
+                } else if(player == 'Paper') {
+                    decision = 'Draw! you both chose ' + computer
+                } else {
+                    decision = 'You Win! ' + player + ' beats ' + computer
+                }
+            } else {
+                if(player == 'Rock') {
+                    decision = 'You Win! ' + player + ' beats ' + computer
+                } else if(player == 'Paper') {
+                    decision = 'You Lose! ' + computer + ' beats ' + player
+                } else {
+                    decision = 'Draw! you both chose ' + computer
+                }
+            }
+            return decision
+        }
+
+        function getStringTitleCase(s) {
+            let newString = s.toUpperCase()[0] + s.slice(1,s.length)
+            return newString
+        }
+
+        function game(howManygames) {
+            var gameTable = []
+            var gameInfo = {}
+
+            for (let i = 0; i < howManygames; i++) {
+                yourMove = getPlayerChoice(i+1)
+                while(!availableChoices.includes(yourMove.toLowerCase())) {
+                    yourMove = prompt(yourMove + ' is not a valid choice, please enter a valid choice') 
+                }
+                computerMove = getComputerChoice()
+                gameInfo = {
+                    game: i+1,
+                    yourMove: getStringTitleCase(yourMove),
+                    computerMove: getStringTitleCase(computerMove),
+                    theResult: playRound(computerMove, yourMove)
+                }
+                gameTable.push(gameInfo)
+            }
+            return gameTable
+        }
+        
+        let availableChoices = ['rock', 'paper', 'scissors']        
+        let howManygames = parseInt(prompt('Welcome to Rock, Paper, Scissors game!\nHow many games do you want to play (must be between 1 and 10)?'))
+        while(howManygames < 1 || howManygames > 10) {
+            howManygames = prompt(howManygames + ' is not a valid number, please enter the number of games you want to play (must be between 1 and 10)')
+        }
+        let resultTable = game(howManygames)
+        
+        let winStyle = 'color: green'
+        let loseStyle = 'color: red'
+        let drawStyle = 'color: gray'
+
+        resultTable.forEach(round => {
+            if(round.theResult.includes('You Win')) {
+                console.groupCollapsed('%cGame ' + round.game, winStyle)
+            } else if(round.theResult.includes('You Lose')) {
+                console.groupCollapsed('%cGame ' + round.game, loseStyle)
+            } else {
+                console.groupCollapsed('%cGame ' + round.game, drawStyle)
+            }
+            console.log('Your Move: ' + round.yourMove);
+            console.log("Computer's Move: " + round.computerMove)
+            if(round.theResult.includes('You Win')) {
+                console.log('Result: %c' + round.theResult, winStyle)
+            } else if(round.theResult.includes('You Lose')) {
+                console.log('Result: %c' + round.theResult, loseStyle)
+            } else {
+                console.log('Result: %c' + round.theResult, drawStyle)
+            }
+            
+            console.groupEnd('Game ' + round.game)
+        })
+        //console.table(resultTable)
+        
+
+    </script>
+</body>
+</html>
