@@ -8,16 +8,23 @@
 </head>
 <body>
     <script>
+
+// A function that returns the computer choice as a random pick of Rock, Paper, or Scissors 
+
         function getComputerChoice() {
-            return availableChoices[Math.floor(Math.random()*availableChoices.length)]
+            return rockPaperScissors[Math.floor(Math.random()*rockPaperScissors.length)]
 
         }
 
+// A function that returns the player choice based on his input 
+        
         function getPlayerChoice(i) {
             let choice = prompt('Welcome to game ' + i + '\nPlease enter your choice:')
             return choice
 
             }
+
+// A function that compares the player and computer choices, and returns a string of who won the game            
 
         function playRound(computer, player) {
             let decision = ''
@@ -51,10 +58,15 @@
             return decision
         }
 
+// A function that returns the title case for a string        
+
         function getStringTitleCase(s) {
-            let newString = s.toUpperCase()[0] + s.slice(1,s.length)
-            return newString
+            let titleCaseString = s.toUpperCase()[0] + s.slice(1,s.length)
+            return titleCaseString
         }
+
+// The main function, runs the game for n number of turns, and returns an array of n objects, 
+// each object contains full information about the turn.  
 
         function game(howManygames) {
             var gameTable = []
@@ -62,7 +74,7 @@
 
             for (let i = 0; i < howManygames; i++) {
                 yourMove = getPlayerChoice(i+1)
-                while(!availableChoices.includes(yourMove.toLowerCase())) {
+                while(!rockPaperScissors.includes(yourMove.toLowerCase())) {
                     yourMove = prompt(yourMove + ' is not a valid choice, please enter a valid choice') 
                 }
                 computerMove = getComputerChoice()
@@ -76,25 +88,29 @@
             }
             return gameTable
         }
-        
-        let availableChoices = ['rock', 'paper', 'scissors']        
+
+// Create a array of 3 strings: rock, paper, and scissors!         
+        let rockPaperScissors = ['rock', 'paper', 'scissors']
+// get input from user for how many turns he wants to have in the game                
         let howManygames = parseInt(prompt('Welcome to Rock, Paper, Scissors game!\nHow many games do you want to play (must be between 1 and 10)?'))
+//validate user input to make sure it's not less than zero or greater than 10        
         while(howManygames < 1 || howManygames > 10) {
             howManygames = prompt(howManygames + ' is not a valid number, please enter the number of games you want to play (must be between 1 and 10)')
         }
+//call the main function passing the number of turns as an argument        
         let resultTable = game(howManygames)
-        
+// Create three color formats for win, lose, and draw         
         let winStyle = 'color: green'
         let loseStyle = 'color: red'
         let drawStyle = 'color: gray'
-
+// For each round, print the following information: Player's move, Computer Move, Result        
         resultTable.forEach(round => {
             if(round.theResult.includes('You Win')) {
-                console.groupCollapsed('%cGame ' + round.game, winStyle)
+                console.group('%cRound ' + round.game + ' (You Win! 🤩🤩)', winStyle)
             } else if(round.theResult.includes('You Lose')) {
-                console.groupCollapsed('%cGame ' + round.game, loseStyle)
+                console.group('%cRound ' + round.game + ' (You lose! 😭😭)', loseStyle)
             } else {
-                console.groupCollapsed('%cGame ' + round.game, drawStyle)
+                console.group('%cRound ' + round.game + " (It's a Draw! 😐😐)", drawStyle)
             }
             console.log('Your Move: ' + round.yourMove);
             console.log("Computer's Move: " + round.computerMove)
@@ -106,9 +122,9 @@
                 console.log('Result: %c' + round.theResult, drawStyle)
             }
             
-            console.groupEnd('Game ' + round.game)
+            console.groupEnd('Round ' + round.game)
         })
-        //console.table(resultTable)
+        
         
 
     </script>
