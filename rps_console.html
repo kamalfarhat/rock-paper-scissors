@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissor</title>
+    
+git </head>
+<body>
+    <script>
+
+// A function that returns the computer choice as a random pick of Rock, Paper, or Scissors 
+
+        function getComputerChoice() {
+            return rockPaperScissors[Math.floor(Math.random()*rockPaperScissors.length)]
+
+        }
+
+// A function that returns the player choice based on his input 
+        
+        function getPlayerChoice(i) {
+            let choice = prompt('Welcome to game ' + i + '\nPlease enter your choice:')
+            return choice
+
+            }
+
+// A function that compares the player and computer choices, and returns a string of who won the game            
+
+        function playRound(computer, player) {
+            let decision = ''
+            computer = getStringTitleCase(computer)
+            player = getStringTitleCase(player)
+            if(computer == 'Rock') {
+                if(player == 'Rock') {
+                    decision = 'Draw! you both chose ' + computer
+                } else if(player == 'Paper') {
+                    decision = 'You Win! ' + player + ' beats ' + computer
+                } else {
+                    decision = 'You Lose! ' + computer + ' beats ' + player
+                }
+            } else if(computer == 'Paper') {
+                if(player == 'Rock') {
+                    decision = 'You Lose! ' + computer + ' beats ' + player
+                } else if(player == 'Paper') {
+                    decision = 'Draw! you both chose ' + computer
+                } else {
+                    decision = 'You Win! ' + player + ' beats ' + computer
+                }
+            } else {
+                if(player == 'Rock') {
+                    decision = 'You Win! ' + player + ' beats ' + computer
+                } else if(player == 'Paper') {
+                    decision = 'You Lose! ' + computer + ' beats ' + player
+                } else {
+                    decision = 'Draw! you both chose ' + computer
+                }
+            }
+            return decision
+        }
+
+// A function that returns the title case for a string        
+
+        function getStringTitleCase(s) {
+            let titleCaseString = s.toUpperCase()[0] + s.slice(1,s.length)
+            return titleCaseString
+        }
+
+// The main function, runs the game for n number of turns, and returns an array of n objects, 
+// each object contains full information about the turn.  
+
+        function game(howManygames) {
+            var gameTable = []
+            var gameInfo = {}
+
+            for (let i = 0; i < howManygames; i++) {
+                yourMove = getPlayerChoice(i+1)
+                while(!rockPaperScissors.includes(yourMove.toLowerCase())) {
+                    yourMove = prompt(yourMove + ' is not a valid choice, please enter a valid choice') 
+                }
+                computerMove = getComputerChoice()
+                gameInfo = {
+                    game: i+1,
+                    yourMove: getStringTitleCase(yourMove),
+                    computerMove: getStringTitleCase(computerMove),
+                    theResult: playRound(computerMove, yourMove)
+                }
+                gameTable.push(gameInfo)
+            }
+            return gameTable
+        }
+
+// Create a array of 3 strings: rock, paper, and scissors!         
+        let rockPaperScissors = ['rock', 'paper', 'scissors']
+// get input from user for how many turns he wants to have in the game                
+        let howManygames = parseInt(prompt('Welcome to Rock, Paper, Scissors game!\nHow many games do you want to play (must be between 1 and 10)?'))
+//validate user input to make sure it's not less than zero or greater than 10        
+        while(howManygames < 1 || howManygames > 10) {
+            howManygames = prompt(howManygames + ' is not a valid number, please enter the number of games you want to play (must be between 1 and 10)')
+        }
+//call the main function passing the number of turns as an argument        
+        let resultTable = game(howManygames)
+// Create three color formats for win, lose, and draw         
+        let winStyle = 'color: green'
+        let loseStyle = 'color: red'
+        let drawStyle = 'color: gray'
+// For each round, print the following information: Player's move, Computer Move, Result        
+        resultTable.forEach(round => {
+            if(round.theResult.includes('You Win')) {
+                console.group('%cRound ' + round.game + ' (You Win! 🤩🤩)', winStyle)
+            } else if(round.theResult.includes('You Lose')) {
+                console.group('%cRound ' + round.game + ' (You lose! 😭😭)', loseStyle)
+            } else {
+                console.group('%cRound ' + round.game + " (It's a Draw! 😐😐)", drawStyle)
+            }
+            console.log('Your Move: ' + round.yourMove);
+            console.log("Computer's Move: " + round.computerMove)
+            if(round.theResult.includes('You Win')) {
+                console.log('Result: %c' + round.theResult, winStyle)
+            } else if(round.theResult.includes('You Lose')) {
+                console.log('Result: %c' + round.theResult, loseStyle)
+            } else {
+                console.log('Result: %c' + round.theResult, drawStyle)
+            }
+            
+            console.groupEnd('Round ' + round.game)
+        })
+        
+        
+
+    </script>
+</body>
+</html>
