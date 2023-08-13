@@ -15,12 +15,23 @@
             <div class="header-subtext">Can you beat the machine? Select your move from the option below and help save humanity!</div>
           </div>
           <div class="header-scorecard">
+            <div class="moveTitles">
+                <div class="playerTitle"></div>
+                <div class="computerTitle"></div>
+            </div>
             <div class="displayMoves">
                 <div id = "player" class="playerMove"></div>
                 <div id = "computer" class="computerMove"></div>
             </div>
             <div class="displayScores">
-                <div class="roundScore"></div>
+                <div class="roundScore">
+                    <div class="roundScorePHolder">
+                        <div class = "roundScoreP">&nbsp;</div>
+                    </div>
+                    <div class="roundScoreCHolder">
+                        <div class = "roundScoreC">&nbsp;</div>
+                    </div>
+                </div>
                 <div class="finalScore"></div>
             </div>
           </div>        
@@ -43,7 +54,7 @@
           </div>
         </div>
       </div>
-      <div class='footer'>Copyright   &copy;   The Odin Project 2021</div>
+
 <script>
 
 // A function that returns the computer choice as a random pick of Rock, Paper, or Scissors 
@@ -65,7 +76,7 @@
             if(computer == 'Rock') {
                 if(player == 'Paper') {
                     playerScore = 1
-                } else {
+                } else if(player == 'Scissors'){
                     computerScore = 1
                 }
             } else if(computer == 'Paper') {
@@ -85,13 +96,28 @@
         }
 // A function that displays the moves and results on the page
         function dispalyScores(playerChoice, computerChoice) {
+            playerMoveTitle = document.querySelector('.playerTitle')
+            computerMoveTitle = document.querySelector('.computerTitle')
             playerMoveHolder = document.getElementById('player')
             computerMoveHolder = document.getElementById('computer')                        
-            roundScoreHolder = document.querySelector('.roundScore')
+            roundScorePlayer = document.querySelector('.roundScoreP')
+            roundScoreComputer = document.querySelector('.roundScoreC')
             finalScoreHolder = document.querySelector('.finalScore')
-            playerMoveHolder.innerHTML = '<img src="img/' + playerChoice + '.jpg">'
-            computerMoveHolder.innerHTML = '<img src="img/' + computerChoice + '.jpg">'
-            roundScoreHolder.innerHTML = scores[1] + ' / ' + scores[0]
+            playerMoveHolder.innerHTML = '<img class = "playerImage" src="img/' + playerChoice + '.jpg">'
+            computerMoveHolder.innerHTML = '<img class = "computerImage" src="img/' + computerChoice + '.jpg">'
+            computerMoveTitle.textContent = 'Computer'
+            playerMoveTitle.textContent = "You"
+            playerMoveTitle.style.fontWeight = '900'
+            computerMoveTitle.style.fontWeight = '900'
+            roundScorePlayer.textContent = scores[1] 
+            roundScoreComputer.textContent = scores[0]
+            roundScoreComputer.style.fontWeight = '900'
+            roundScorePlayer.style.fontWeight = '900'
+            if(scores[1] > scores[0]) {
+                roundScorePlayer.style.color = "green"
+            } else if(scores[1] < scores[0]) {
+                roundScorePlayer.style.color = "red"
+            }
             if(scores[0] == 5) {
                 finalScoreHolder.innerHTML = 'You Lose! 😭😭&nbsp<a class="link" href="index.html"> (Try Again?) </a>'
                 finalScoreHolder.style.color = 'red'
